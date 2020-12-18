@@ -44,6 +44,7 @@ public class IndexController {
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable("id") Long id, Model model) {
         model.addAttribute("blog", blogService.getBlog(id));
+        blogService.updateBlogViewsById(id);
         return "/static/blog";
     }
 

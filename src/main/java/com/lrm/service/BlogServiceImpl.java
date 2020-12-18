@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -71,6 +73,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @Transactional
     public Blog saveBlog(Blog blog) {
         blog.setCreateTime(new Date());
         blog.setUpdateTime(new Date());
@@ -79,6 +82,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @Transactional
     public Blog updateBlog(Long id, Blog blog) {
         Blog b = blogRepository.getOne(id);
         if (b == null){
@@ -94,6 +98,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @Transactional
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);
     }
@@ -111,6 +116,12 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> getBlogsByTagId(Long id) {
         return blogRepository.findAllByTagId(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateBlogViewsById(Long id) {
+        blogRepository.updateViewByBlogid(id);
     }
 
 }

@@ -29,4 +29,6 @@ public interface BlogService {
     List<Blog> getBlogsByTypeId(Long id);
 
     List<Blog> getBlogsByTagId(Long id);
+
+    void updateBlogViewsById(Long id);
 }

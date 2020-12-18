@@ -4,12 +4,17 @@ import com.lrm.po.Blog;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface BlogRepository extends JpaRepository<Blog, Long>, JpaSpecificationExecutor<Blog> {
+
+    @Modifying
+    @Query(value = "update t_blog set views = views + 1 where t_blog.id = :id", nativeQuery = true)
+    void updateViewByBlogid(@Param("id") Long id);
 
     @Query("select b from Blog b where b.recommend = true")
     List<Blog> findTop(Pageable pageable);
