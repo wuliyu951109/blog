@@ -14,18 +14,18 @@
         <div class="ui container">
             <div class="ui inverted secondary stackable menu">
                 <h2 class="ui teal header item">管理后台</h2>
-                <a th:href="@{/admin/blogs}" href="./blogs" class="active item m-item m-mobile-hide"><i class="home icon"></i>博客</a>
-                <a th:href="@{/admin/types}" href="./types" class="item m-item m-mobile-hide"><i class="idea icon"></i>分类</a>
-                <a th:href="@{/admin/tags}" href="./tags" class="item m-item m-mobile-hide"><i class="tags icon"></i>标签</a>
+                <a th:href="@{/admin/blogs}" class="active item m-item m-mobile-hide"><i class="home icon"></i>博客</a>
+                <a th:href="@{/admin/types}" class="item m-item m-mobile-hide"><i class="idea icon"></i>分类</a>
+                <a th:href="@{/admin/tags}" class="item m-item m-mobile-hide"><i class="tags icon"></i>标签</a>
                 <div class="right m-item m-mobile-hide menu">
                     <div class="ui dropdown item">
                         <div class="text">
                             <img th:src="@{/static/static/img/me.jpg}" width="100" height="100" class="ui avatar image">
-                            吴立宇
+                            <span th:text="${user.nickname}">吴立宇</span>
                         </div>
                         <i class="dropdown icon"></i>
                         <div class="menu">
-                            <a th:href="@{/admin/logout}" href="/admin/logout" class="item">注销</a>
+                            <a th:href="@{/admin/logout}" class="item">注销</a>
                         </div>
                     </div>
                 </div>
@@ -38,8 +38,8 @@
     <div class="ui attached pointing menu">
         <div class="ui container">
             <div class="right menu">
-                <a th:href="@{/admin/blogs-input}" href="./blogs-input.html" class="item">发布</a>
-                <a th:href="@{/admin/blogs}" href="./blogs.html" class="teal active item">列表</a>
+                <a th:href="@{/admin/blogs-input}" class="item">发布</a>
+                <a th:href="@{/admin/blogs}" class="teal active item">列表</a>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@
                             <td th:text="${blog.description}">ha!ha!ha!</td>
                             <td th:text="${blog.recommend? '是' : '否'}">是</td>
                             <td th:text="${blog.published? '草稿' : '发布'}">是</td>
-                            <td th:text="${blog.updateTime}">2020-11-27 18:22</td>
+                            <td th:text="${#dates.format(blog.updateTime, 'yyyy-MM-dd HH:mm:ss')}">2020-11-27 18:22</td>
                             <td>
                                 <a th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">编辑</a>
                                 <a th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">删除</a>

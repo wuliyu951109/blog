@@ -7,6 +7,7 @@ import com.lrm.po.User;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;
 import com.lrm.service.TypeService;
+import com.lrm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,8 +43,12 @@ public class BlogController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/blogs")
     public String blogs(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, Blog blog, Model model) {
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("types", typeService.listType());
         model.addAttribute("page", blogService.listBlog(pageable, blog));
         return LIST;
@@ -51,6 +56,7 @@ public class BlogController {
 
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, Blog blog, Model model) {
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("page", blogService.listBlog(pageable, blog));
         model.addAttribute("types", typeService.listType());
         return "/admin/blogs";
@@ -58,6 +64,7 @@ public class BlogController {
 
     @GetMapping({"/blogs/input","/blogs-input"})
     public String input(Model model) {
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("tags", tagService.listTag());
         model.addAttribute("types", typeService.listType());
         model.addAttribute("blog", new Blog());
@@ -65,7 +72,7 @@ public class BlogController {
     }
 
     @PostMapping("/blogs")
-    public String post(Blog blog, RedirectAttributes attributes, HttpSession session) {
+    public String post(Blog blog, RedirectAttributes attributes, HttpSession session, Model model) {
         blog.setUser((User) session.getAttribute("user"));
         blog.setType(typeService.getType(blog.getType().getId()));
         blog.setTags(tagService.listTag(blog.getTagIds()));
@@ -75,11 +82,12 @@ public class BlogController {
         } else {
             attributes.addFlashAttribute("message", "操作成功");
         }
+        model.addAttribute("user", userService.getUser());
         return REDITECT_LIST;
     }
 
     @PostMapping("/blogs/update")
-    public String postupdate(Blog blog, RedirectAttributes attributes, HttpSession session) {
+    public String postupdate(Blog blog, RedirectAttributes attributes, HttpSession session, Model model) {
         blog.setUser((User) session.getAttribute("user"));
         blog.setType(typeService.getType(blog.getType().getId()));
         blog.setTags(tagService.listTag(blog.getTagIds()));
@@ -89,6 +97,7 @@ public class BlogController {
         } else {
             attributes.addFlashAttribute("message", "操作成功");
         }
+        model.addAttribute("user", userService.getUser());
         return REDITECT_LIST;
     }
 
@@ -104,12 +113,14 @@ public class BlogController {
         model.addAttribute("types", typeList);
         List<Tag> tagList = tagService.listTag();
         model.addAttribute("tags", tagList);
+        model.addAttribute("user", userService.getUser());
         return "/admin/blogs-update";
     }
 
     @GetMapping("/blogs/{id}/delete")
-    public String deleteBlog(@PathVariable Long id) {
+    public String deleteBlog(@PathVariable Long id, Model model) {
         blogService.deleteBlog(id);
+        model.addAttribute("user", userService.getUser());
         return "redirect: /admin/blogs";
     }
 

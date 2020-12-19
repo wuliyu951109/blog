@@ -18,6 +18,7 @@ public class User {
     private String password;
     private String email;
     private String avartar;
+    private String details;
     private Integer type;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
@@ -99,6 +100,14 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public List<Blog> getBlogList() {

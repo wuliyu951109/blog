@@ -13,16 +13,18 @@
         <div class="ui container">
             <div class="ui inverted secondary stackable menu">
                 <h2 class="ui teal header item">WuLiyu</h2>
-                <a th:href="@{/}" href="./index.html" class="item m-item m-mobile-hide"><i class="home icon"></i>首页</a>
-                <a th:href="@{/types}" href="./types.html" class="item m-item m-mobile-hide"><i class="idea icon"></i>分类</a>
-                <a th:href="@{/tags}" href="./tags.html" class="active item m-item m-mobile-hide"><i class="tags icon"></i>标签</a>
-                <a th:href="@{/archives}" href="./archives.html" class="item m-item m-mobile-hide"><i class="tags icon"></i>归档</a>
-                <a th:href="@{/about}" href="./about.html" class="item m-item m-mobile-hide"><i class="info icon"></i>关于我</a>
+                <a th:href="@{/}" class="item m-item m-mobile-hide"><i class="home icon"></i>首页</a>
+                <a th:href="@{/types}" class="item m-item m-mobile-hide"><i class="idea icon"></i>分类</a>
+                <a th:href="@{/tags}" class="item m-item m-mobile-hide"><i class="tags icon"></i>标签</a>
+                <a th:href="@{/archives}" class="item m-item m-mobile-hide"><i class="tags icon"></i>归档</a>
+                <a th:href="@{/about}" class="item m-item m-mobile-hide"><i class="info icon"></i>关于我</a>
                 <div class="right item m-item m-mobile-hide">
-                    <div class="ui icon input transparent invert">
-                        <input type="text" placeholder="Search...">
-                        <i class="search icon link"></i>
-                    </div>
+                    <form th:action="@{/search}" name="search" method="post">
+                        <div class="ui icon input transparent inverted">
+                            <input type="text" placeholder="Search..." name="query" th:value="${query}">
+                            <i onclick="document.forms['search'].submit()" class="search icon link"></i>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -40,18 +42,12 @@
                         <div class="ui teal header">搜索结果</div>
                     </div>
                     <div class="right aligned column">
-                        共 <h3 class="ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(tags)}"> 14 </h3> 个
+                        共 <h3 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}"> 14 </h3> 个
                     </div>
                 </div>
             </div>
-            <div class="ui attached segment m-padded-tb-large">
-                <a th:href="@{/tags/{id}(id=${tag.id})}" th:each="tag : ${tags}" th:classappend="${tag.id==id?' colored ':' basic '}"  class="ui teal left pointing label m-margin-tb-tiny">
-                    <span th:text="${tag.name}">方法论</span>
-                    <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
-                </a>
-            </div>
-            <div class="ui teal segment" th:if="${tg!=null&&tg.blogs!=null}">
-                <div class="ui vertical segment m-mobile-lr-clear" th:each="blog : ${tg.blogs}">
+            <div class="ui teal segment">
+                <div class="ui vertical segment m-mobile-lr-clear" th:each="blog : ${page.content}">
                     <div class="ui grid padded mobile reversed stackable">
                         <div class="eleven wide column">
                             <h3 class="ui header"><a th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}">你真的理解什么是财富自由吗？</a></h3>

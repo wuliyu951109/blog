@@ -4,6 +4,7 @@ import com.lrm.po.User;
 import com.lrm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,15 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/login.html"})
     public String loginPage() {
         return "/admin/login.html";
+    }
+
+    @GetMapping("/index.html")
+    public String index(Model model) {
+        model.addAttribute("user", userService.getUser());
+        return "/admin/index.html";
     }
 
     @PostMapping("/login")

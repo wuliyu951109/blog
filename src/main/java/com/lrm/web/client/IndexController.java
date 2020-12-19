@@ -6,6 +6,7 @@ import com.lrm.po.Type;
 import com.lrm.service.BlogService;
 import com.lrm.service.TagService;
 import com.lrm.service.TypeService;
+import com.lrm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +25,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private BlogService blogService;
@@ -39,6 +45,13 @@ public class IndexController {
         model.addAttribute("tags", tagService.getTagTop(10));
         model.addAttribute("recommendBlogs", blogService.listRecommendBlogTop(8));
         return "/static/index";
+    }
+
+    @PostMapping("/search")
+    public String search(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, @RequestParam String query, Model model) {
+        model.addAttribute("page", blogService.listBlog("%" + query + "%", pageable));
+        model.addAttribute("query", query);
+        return "/static/search";
     }
 
     @GetMapping("/blog/{id}")
@@ -105,6 +118,8 @@ public class IndexController {
 
     @GetMapping("/about")
     public String about(Model model) {
+        model.addAttribute("user", userService.getUser());
+        model.addAttribute("types", typeService.listType());
         model.addAttribute("tags", tagService.listTag());
         return "/static/about";
     }
