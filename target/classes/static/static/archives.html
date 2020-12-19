@@ -19,10 +19,12 @@
                 <a th:href="@{/archives}" href="./archives.html" class="active item m-item m-mobile-hide"><i class="tags icon"></i>归档</a>
                 <a th:href="@{/about}" href="./about.html" class="item m-item m-mobile-hide"><i class="info icon"></i>关于我</a>
                 <div class="right item m-item m-mobile-hide">
-                    <div class="ui icon input transparent invert">
-                        <input type="text" placeholder="Search...">
-                        <i class="search icon link"></i>
-                    </div>
+                    <form th:action="@{/search}" name="search" method="post">
+                        <div class="ui icon input transparent inverted">
+                            <input type="text" placeholder="Search..." name="query" th:value="${query}">
+                            <i onclick="document.forms['search'].submit()" class="search icon link"></i>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
