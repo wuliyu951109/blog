@@ -40,9 +40,9 @@
             <div class="ui segment top attached">
                 <div class="ui horizontal link list">
                     <div class="item">
-                        <img th:src="@{/static/static/img/me.jpg}" class="ui avatar image">
+                        <img th:src="@{${blog.user.avartar}}" class="ui avatar image">
                         <div class="content">
-                            <a th:href="@{/about}" class="header">吴立宇</a>
+                            <a th:href="@{/about}" class="header" th:text="${blog.user.nickname}">吴立宇</a>
                         </div>
                     </div>
                     <div class="item">
@@ -93,8 +93,8 @@
                 <div class="ui grid" id="wexin">
                     <div class="eleven wide column">
                         <ul class="list">
-                            <li>作者:吴立宇(联系作者)</li>
-                            <li>发表时间:2020-11-24</li>
+                            <li>作者: <span th:text="${blog.user.nickname}">吴立宇</span>(联系作者)</li>
+                            <li>发表时间:<span th:text="${#dates.format(blog.createTime, 'yyyy-MM-dd')}">2020-11-24</span></li>
                             <li>版权声明:自由转载</li>
                             <li>公众号转载:添加作者二维码</li>
                         </ul>
@@ -176,6 +176,8 @@
                     </div>
                 </div>
                 <div class="ui form" id="comment-container">
+                    <input type="text" name="blog.id" th:value="${blog.id}">
+                    <input type="text" name="parentComment.id" value="-1">
                     <div class="field">
                         <textarea name="content" placeholder="请输入评论信息..." ></textarea>
                     </div>
@@ -193,7 +195,7 @@
                             </div>
                         </div>
                         <div class="field m-mobile-wide">
-                            <button class="ui teal button m-mobile-wide">
+                            <button class="ui teal button m-mobile-wide" id="commentpost-btn" type="button">
                                 <i class="edit icon"></i>发布
                             </button>
                         </div>
@@ -220,7 +222,7 @@
                 <div class="three wide column">
                     <div class="ui inverted link list">
                         <div class="item">
-                            <img  th:src="@{/static/static/img/me.jpg}" alt="" class="ui rounded image" style="width: 10em;"/>
+                            <img  th:src="@{/static/static/img/weixin.jpg}" alt="" class="ui rounded image" style="width: 10em;"/>
                         </div>
                     </div>
                 </div>
