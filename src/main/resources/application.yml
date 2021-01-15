@@ -1,3 +1,5 @@
+server:
+  port: 8082
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,23 +13,24 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-paths: src/main/java
+      additional-paths: src/main/
   thymeleaf:
     prefix: classpath:/static
     suffix: .html
   mvc:
     view:
       prefix: classpath:/static
+  redis:
+    host: localhost
+    password:
+    port: 6379
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on-save
+      namespace: springboot-session
 logging:
   level:
     root: info
     com.lrm: debug
   file: log/blog.log
-
-
-
-
-
-
-
-

@@ -65,9 +65,9 @@
                         <div class="ui teal pointing basic label" th:each="tag : ${tags}" th:text="${tag.name}">Java</div>
                     </div>
                     <div class="ui bottom attached segment">
-                        <a href="#" class="ui circular icon button"><i class="github icon"></i></a>
-                        <a href="#" class="ui wechat circular icon button" data-position="bottom center"><i class="weixin icon"></i></a>
-                        <a href="#" class="ui qq circular icon button" data-content="1239741659" data-position="bottom center"><i class="qq icon"></i></a>
+                        <a href="https://github.com/" data-content="https://github.com/wuliyu951109" class="ui circular icon button"><i class="github icon"></i></a>
+                        <a class="ui wechat circular icon button" data-position="bottom center"><i class="weixin icon"></i></a>
+                        <a class="ui qq circular icon button" data-content="1239741659" data-position="bottom center"><i class="qq icon"></i></a>
                     </div>
                     <div class="ui wechat-qr flowing popup top left transition hidden" style="width: 120px">
                         <img th:src="@{/static/static/img/weixin.jpg}" src="./static/img/weixin.jpg" alt="" class="ui rounded image" style="width: 100px;">

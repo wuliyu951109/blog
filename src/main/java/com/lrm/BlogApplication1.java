@@ -8,8 +8,8 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @SpringBootApplication
 @EnableRedisHttpSession
 @EnableCaching
-public class BlogApplication {
+public class BlogApplication1 {
     public static void main(String[] args) {
-        SpringApplication.run(BlogApplication.class, args);
+        SpringApplication.run(BlogApplication1.class, args);
     }
 }

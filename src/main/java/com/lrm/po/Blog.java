@@ -2,13 +2,14 @@ package com.lrm.po;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "t_blog")
-public class Blog {
+public class Blog implements Serializable {
 
     @Id
     @GeneratedValue

@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Utils {
 
-    public static String code(String str) {
+    public static String encode(String str) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(str.getBytes());
@@ -27,10 +27,5 @@ public class MD5Utils {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(code("helloworld"));
-
     }
 }

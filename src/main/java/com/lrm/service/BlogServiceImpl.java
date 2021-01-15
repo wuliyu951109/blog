@@ -3,9 +3,10 @@ package com.lrm.service;
 import com.lrm.dao.BlogRepository;
 import com.lrm.po.Blog;
 import com.lrm.po.Type;
-import com.lrm.util.MyBeanUtilxs;
+import com.lrm.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -28,6 +28,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private BlogRepository blogRepository;
+
 
     @Override
     public List<Blog> allBlogs() {
@@ -71,10 +72,9 @@ public class BlogServiceImpl implements BlogService {
         Pageable pageable = PageRequest.of(0, size, sort);
         return blogRepository.findTop(pageable);
     }
-
     @Override
     public List<Blog> listBlog() {
-        return null;
+        return blogRepository.findAll();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class BlogServiceImpl implements BlogService {
                 e.printStackTrace();
             }
         }
-        BeanUtils.copyProperties(b, blog, MyBeanUtilxs.getNullPropertyNames(blog));
+        BeanUtils.copyProperties(b, blog, MyBeanUtils.getNullPropertyNames(blog));
         b.setUpdateTime(new Date());
         return blogRepository.save(b);
     }
@@ -108,16 +108,19 @@ public class BlogServiceImpl implements BlogService {
         blogRepository.deleteById(id);
     }
 
+    @Cacheable(value = "blog:list")
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
         return blogRepository.findAll(pageable);
     }
 
+    @Cacheable(value = "blog:type:list")
     @Override
     public List<Blog> getBlogsByTypeId(Long id) {
         return blogRepository.findAllByTypeId(id);
     }
 
+    @Cacheable(value = "blog:tag:list")
     @Override
     public List<Blog> getBlogsByTagId(Long id) {
         return blogRepository.findAllByTagId(id);

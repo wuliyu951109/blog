@@ -7,6 +7,7 @@ import javassist.NotFoundException;
 import org.mockito.internal.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,19 +31,18 @@ public class TypeServiceImpl implements TypeService {
         return typeRepository.save(type);
     }
 
-    @Transactional
+    @Cacheable(value = "type")
     @Override
     public Type getType(Long id) {
         return typeRepository.getOne(id);
     }
 
-    @Transactional
+    @Cacheable(value = "type:list1")
     @Override
     public Page<Type> listType(Pageable pageable) {
         return typeRepository.findAll(pageable);
     }
 
-    @Transactional
     @Override
     public List<Type> listType() {
         return typeRepository.findAll();
@@ -69,7 +69,6 @@ public class TypeServiceImpl implements TypeService {
         typeRepository.deleteById(id);
     }
 
-    @Transactional
     @Override
     public List<Type> listTypeTop(Integer size) {
         Sort sort = Sort.by(Sort.Direction.DESC, "blogs.size");
@@ -77,6 +76,7 @@ public class TypeServiceImpl implements TypeService {
         return typeRepository.findTop(pageable);
     }
 
+    @Cacheable(value = "type")
     @Transactional
     @Override
     public Type getTypeByName(String name) {
